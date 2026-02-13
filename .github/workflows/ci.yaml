@@ -21,7 +21,19 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci 
+      - name:  Run Lint 
+        run: npm run Lint 
+      - name: Run test 
+        run: npm test 
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+
+  docker:
+    needs: CI_job
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -37,4 +49,3 @@ jobs:
           tags: |
             yousef2005/order-service:latest
             yousef2005/order-service:${{ github.sha }}
-            yousef2005/order-service:1.0.${{ github.run_number }}
