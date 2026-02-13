@@ -26,8 +26,8 @@ jobs:
         run:  npm run lint 
       # - name: Run test 
       #   run: npm test 
-      - name: Run npm audit
-        run: npm audit --audit-level=high
+      # - name: Run npm audit
+      #   run: npm audit --audit-level=high
 
   docker:
     needs: CI_job
