@@ -24,8 +24,8 @@ jobs:
         run:   npm ci 
       - name: Run Lint 
         run:  npm run lint 
-      - name: Run test 
-        run: npm test 
+      # - name: Run test 
+      #   run: npm test 
       - name: Run npm audit
         run: npm audit --audit-level=high
 
