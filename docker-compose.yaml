@@ -1,0 +1,31 @@
+version: '3.8'
+
+
+services:
+  order-service: 
+    build: .
+    ports:
+      - "3004:3004"
+    env_file:
+      - .env
+    depends_on:
+      - mongo-order
+    networks:
+      - order-service-network
+  mongo-order:
+    image: mongo:6  
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-order-data:/data/db
+    networks:
+      - order-service-network
+
+volumes:
+  mongo-order-data:
+
+
+networks:
+  order-service-network:
+    driver: bridge
+

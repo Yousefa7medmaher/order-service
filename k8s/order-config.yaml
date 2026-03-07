@@ -1,0 +1,8 @@
+apiVersion: v1 
+kind: ConfigMap 
+metadata: 
+  name: order-config 
+data: 
+  AUTH_SERVICE_URL: "http://auth-service:5000"
+  PRODUCT_SERVICE_URL: "http://products-service:3000/api/products"
+  CART_SERVICE_URL: "http://cart-service:3003/api/cart"

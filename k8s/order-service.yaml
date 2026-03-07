@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  labels:
+    app: order-service
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: my-order-service
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 2
+
+  template:
+    metadata:
+      labels:
+        app: my-order-service
+
+    spec:
+      containers:
+        - name: order-service
+          image: yousef2005/order-service:latest
+
+          ports:
+            - containerPort: 3004
+
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: order-secret
+                  key: MONGODB_URI
+
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "300Mi"
+            limits:
+              cpu: "250m"
+              memory: "400Mi"
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3004
+            initialDelaySeconds: 10
+            timeoutSeconds: 40
+            periodSeconds: 100
+            successThreshold: 1
+            failureThreshold: 2
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3004
+            initialDelaySeconds: 10
+            timeoutSeconds: 40
+            periodSeconds: 100
+            successThreshold: 1
+            failureThreshold: 2

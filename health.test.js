@@ -1,6 +1,6 @@
 // health.test.js
 import request from 'supertest';
-import app from './src/app.js'; // لاحظ إحنا نستورد app فقط
+import app from './src/app.js'; 
 
 describe('Health Check', () => {
   it('should return 200 and status OK', async () => {
