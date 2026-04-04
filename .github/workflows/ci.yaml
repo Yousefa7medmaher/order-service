@@ -26,17 +26,27 @@ jobs:
         run:  npm run lint 
 
 
-  docker:
+  cd:
     needs: CI_job
     runs-on: ubuntu-latest
+    environment:  
+      name: production 
+    if: github.ref_name == 'main' 
+    
     steps:
       - uses: actions/checkout@v4
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+      - name: "Configure AWS Credentials"    
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          aws-region: us-east-1 
+          aws-access-key-id:  ${{ secrets.AWS_ACCESS_KEY_ID }} 
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY  }} 
+          
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
 
       - name: Build and Push Docker image
         uses: docker/build-push-action@v5
@@ -44,5 +54,6 @@ jobs:
           context: .
           push: true
           tags: |
-            yousef2005/order-service:latest
-            yousef2005/order-service:${{ github.sha }}
+            484907510239.dkr.ecr.us-east-1.amazonaws.com/order-service:latest
+            484907510239.dkr.ecr.us-east-1.amazonaws.com/order-service:${{ github.sha }}
+            484907510239.dkr.ecr.us-east-1.amazonaws.com/order-service:v1.${{ github.run_number }}
