@@ -27,7 +27,7 @@ jobs:
         run:  npm run lint 
         continue-on-error: true
 
-  cd:
+  build-and-push:
     needs: CI_job
     runs-on: ubuntu-latest
     environment:  
